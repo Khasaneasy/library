@@ -4,8 +4,9 @@ from django.db import models
 
 User = get_user_model()
 
-BOOK_LENGTH=200
-STATUS_LENGTH=25
+BOOK_LENGTH = 200
+STATUS_LENGTH = 25
+
 
 class Book(models.Model):
     STATUS_CHOICES = [
@@ -32,4 +33,5 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
-        
+
+# Надо добавить : вьюшку добить админку менеджеры ввод вывод 
