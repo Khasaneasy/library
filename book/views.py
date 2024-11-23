@@ -1,13 +1,10 @@
-# from django.contrib.auth import get_user_model
+from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import Book
 from .serializers import BookSerializer
-
-
-# User = get_user_model()
 
 
 class BookViewSet(viewsets.ModelViewSet):
@@ -26,3 +23,25 @@ class BookViewSet(viewsets.ModelViewSet):
             book.save()
             return Response({'status': 'success', 'new_status': new_status})
         return Response({'error': 'Неверный статус'}, status=400)
+
+    @action(detail=False, methods=['get'])
+    def search(self, request):
+        """Поиск книги по title, author или year."""
+        query = request.query_params.get('q', '').strip()
+        if not query:
+            return Response(
+                {'error': 'Не указан параметр поиска'},
+                status=400)
+
+        books = Book.objects.filter(
+            Q(title__icontains=query) |
+            Q(author__icontains=query) |
+            Q(year__icontains=query)
+        )
+        if not books.exists():
+            return Response(
+                {'error': 'Книги по запросу не найдены'},
+                status=404)
+
+        serializer = self.get_serializer(books, many=True)
+        return Response(serializer.data)
