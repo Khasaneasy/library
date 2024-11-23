@@ -1,14 +1,13 @@
-from django.contrib.auth import get_user_model
 from django.db import models
 
 
-User = get_user_model()
-
 BOOK_LENGTH = 200
 STATUS_LENGTH = 25
+AUTHOR_LENGTH = 25
 
 
 class Book(models.Model):
+    """Модель книги в библиотеке."""
     STATUS_CHOICES = [
         ('available', 'В наличии'),
         ('issued', 'Выдана')
@@ -17,12 +16,8 @@ class Book(models.Model):
     title = models.CharField(
         max_length=BOOK_LENGTH
     )
-    author = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        null=True,
-        related_name='books',
-        verbose_name='Автор'
+    author = models.CharField(
+        max_length=AUTHOR_LENGTH
     )
     year = models.DateField()
     status = models.CharField(
@@ -33,5 +28,3 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
-
-# Надо добавить :   менеджеры ввод вывод 
