@@ -16,7 +16,15 @@
 - `status` — статус книги ("в наличии" или "выдана").
 
 
-## Импорт и экспорт данных JSON в БД:
+### Доступные эндпоинты для взаимодествия:
+
+- books/ GET, POST
+- books/{id}/ GET, PUT, PATH, DELETE
+- books/{id}/change_status/ POST
+- books/search/ GET
+
+
+### Импорт и экспорт данных JSON в БД:
 ```
 python manage.py import_books.py
 python manage.py export_books.py
